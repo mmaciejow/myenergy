@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/realTimeFragment">
+
+    <fragment
+        android:id="@+id/realTimeFragment"
+        android:name="net.myenv.myenergy.ui.day.DayFragment"
+        android:label="@string/real_time"
+        tools:layout="@layout/fragment_day" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/day_Fragment"
+        android:name="net.myenv.myenergy.ui.day.DayFragment"
+        tools:layout="@layout/fragment_day">
+        <argument
+            android:name="date"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="net.myenv.myenergy.ui.history.HistoryFragment"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_day"/>
+
+    <fragment
+        android:id="@+id/statistic_Fragment"
+        android:name="net.myenv.myenergy.ui.statistics.StatisticsFragment"
+        android:label="@string/statistics"
+        tools:layout="@layout/fragment_statistics" />
+
+
+
+</navigation>
