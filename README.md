@@ -70,7 +70,10 @@ You can add to crontab
 ## Screenshots
 <table width="100%">
 	<tr>
-	  <th><img src="https://github.com/mmaciejow/myenergy/blob/main/screenshots/myenergy-day.jpg?raw=true" width="100%"></th>
+	  <th><img src="https://github.com/mmaciejow/myenergy/blob/main/screenshots/myenergy-real-time.jpg?raw=true" width="100%"></th>
 	  <th><img src="https://github.com/mmaciejow/myenergy/blob/main/screenshots/myenergy-history.jpg?raw=true" width="100%"></th>
+	</tr>
+	<tr>
+	  <th><img src="https://github.com/mmaciejow/myenergy/blob/main/screenshots/myenergy-day.jpg?raw=true" width="100%"></th>
 	</tr>
 </table>
