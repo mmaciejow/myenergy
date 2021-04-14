@@ -4,7 +4,7 @@ import android.view.View
 
 fun View.show(visibility: Boolean) {
     if(visibility)
-      this.visibility = View.VISIBLE
+        this.visibility = View.VISIBLE
     else
-        this.visibility = View.INVISIBLE
+        this.visibility = View.GONE
 }

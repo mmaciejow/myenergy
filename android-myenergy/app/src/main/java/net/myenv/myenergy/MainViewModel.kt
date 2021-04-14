@@ -21,6 +21,7 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
     val monthlyEnergy = MutableLiveData<Result>()
     val annuallyEnergy = MutableLiveData<Result>()
     val statsEnergy = MutableLiveData<Result>()
+    val inverterInfo = MutableLiveData<Result>()
 
 
     fun getRealTimeProduction(){
@@ -40,15 +41,15 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
             val last = productionList.last()
             val energy = Energy(
                     date = getDatefromTimestamp( last.date,"HH:mm"),
-                    pv_production = last.production,
+                    pvProduction = last.production,
                     power = last.power,
-                    pv_productionList = productionList,
-                    avg_power = (dayList[0].avg_power).toInt(),
-                    max_power = (dayList[0].max_power).toInt()
+                    pvProductionList = productionList,
+                    avgPower = (dayList[0].avg_power).toInt(),
+                    maxPower = (dayList[0].max_power).toInt()
             )
 
-            last.weather_temp?.let { energy.weather_temp = it }
-            last.weather_icon?.let { energy.weather_icon = getResourceIDForWeatherIcon(it) }
+            last.weather_temp?.let { energy.weatherTemp = it }
+            last.weather_icon?.let { energy.weatherIcon = getResourceIDForWeatherIcon(it) }
 
             dayList[0].sunrise?.let { energy.sunrise = it }
             dayList[0].sunset?.let { energy.sunset = it }
@@ -76,14 +77,14 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
 
             val energy = Energy(
                     date = getDatefromTimestamp( dayList[0].date,"yyyy-MM-dd HH:mm"),
-                    pv_production = dayList[0].production,
-                    pv_productionList = productionList,
-                    avg_power = (dayList[0].avg_power).toInt(),
-                    max_power = (dayList[0].max_power).toInt()
+                    pvProduction = dayList[0].production,
+                    pvProductionList = productionList,
+                    avgPower = (dayList[0].avg_power).toInt(),
+                    maxPower = (dayList[0].max_power).toInt()
             )
 
-            dayList[0].weather_temp?.let { energy.weather_temp = it }
-            dayList[0].weather_icon?.let { energy.weather_icon = getResourceIDForWeatherIcon(it) }
+            dayList[0].weather_temp?.let { energy.weatherTemp = it }
+            dayList[0].weather_icon?.let { energy.weatherIcon = getResourceIDForWeatherIcon(it) }
 
             dayList[0].sunrise?.let { energy.sunrise = it }
             dayList[0].sunset?.let { energy.sunset = it }
@@ -115,9 +116,9 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
                 val energy = Energy(
                         id = it.date,
                         date = getDatefromTimestamp(it.date,"dd-MM-yyyy"),
-                        pv_production = it.production
+                        pvProduction = it.production
                 )
-                it.weather_icon?.let { icon-> energy.weather_icon = getResourceIDForWeatherIcon(icon) }
+                it.weather_icon?.let { icon-> energy.weatherIcon = getResourceIDForWeatherIcon(icon) }
                 energyList.add(energy)
             }
             this@MainViewModel.dailyEnergy.postValue(Result.Success(energyList))
@@ -145,7 +146,7 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
                 val energy = Energy(
                         id = it.date,
                         date = getDatefromTimestamp(it.date,"yyyy-MM"),
-                        pv_production = it.production
+                        pvProduction = it.production
                 )
                 energyList.add(energy)
             }
@@ -176,7 +177,7 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
                 val energy = Energy(
                         id = it.date,
                         date = getDatefromTimestamp(it.date,"yyyy-MM"),
-                        pv_production = it.production
+                        pvProduction = it.production
                 )
                 energyList.add(energy)
             }
@@ -199,6 +200,5 @@ class MainViewModel(private val firestoreRepository : FirestoreRepository) : Vie
                 this@MainViewModel.statsEnergy.postValue(Result.Success(stats))
         }
     }
-
 
 }

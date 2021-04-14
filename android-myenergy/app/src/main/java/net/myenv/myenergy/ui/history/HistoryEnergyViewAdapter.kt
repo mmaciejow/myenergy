@@ -80,10 +80,10 @@ class HistoryEnergyViewAdapter(private val energyList: List<Energy>,
         fun bindContent(energy: Energy){
             itemBinding?.let { view ->
                 view.date.text = energy.date
-                view.production.text = energy.pv_production.toString()
+                view.production.text = energy.pvProduction.toString()
                 if (showWeather){
 
-                    energy.weather_icon?.let { view.iconWeather.setImageResource(it) }
+                    energy.weatherIcon?.let { view.iconWeather.setImageResource(it) }
                 }
 
 

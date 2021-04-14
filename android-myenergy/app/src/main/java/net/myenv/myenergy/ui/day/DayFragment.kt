@@ -2,13 +2,10 @@ package net.myenv.myenergy.ui.day
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.Legend
@@ -18,9 +15,9 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.card.MaterialCardView
 import net.myenv.myenergy.MainViewModel
 import net.myenv.myenergy.R
-import net.myenv.myenergy.databinding.TableRowBinding
 import net.myenv.myenergy.model.Energy
 import net.myenv.myenergy.model.PVProduction
 import net.myenv.myenergy.model.Result
@@ -37,16 +34,25 @@ class DayFragment : Fragment() {
 
     private val mainViewModel by sharedViewModel<MainViewModel>()
 
+    private lateinit var dayCardView : MaterialCardView
+    private lateinit var powerCardView : MaterialCardView
+    private lateinit var productionCardView : MaterialCardView
+    private lateinit var chartCardView : MaterialCardView
+
     private lateinit var progressBar : View
     private lateinit var error : TextView
-    private lateinit var statsTable : TableLayout
-    private lateinit var infoWeather : LinearLayout
-    private lateinit var infoSun : Group
-    private lateinit var chart : CombinedChart
-    private lateinit var weatherTemp : TextView
+
     private lateinit var iconWeather : ImageView
-    private lateinit var textSunrise : TextView
-    private lateinit var textSunset : TextView
+    private lateinit var weatherTemp : TextView
+    private lateinit var sunrise : TextView
+    private lateinit var sunset : TextView
+
+    private lateinit var power : TextView
+    private lateinit var avgPower : TextView
+    private lateinit var maxPower : TextView
+    private lateinit var production : TextView
+    private lateinit var startProduction : TextView
+    private lateinit var chart : CombinedChart
 
     private var date = 0L // Real Time
 
@@ -65,130 +71,147 @@ class DayFragment : Fragment() {
         return root
     }
 
-    private fun initView(root: View) {
-        progressBar = root.findViewById(R.id.progress)
-        error = root.findViewById(R.id.not_found_data)
-        statsTable = root.findViewById(R.id.stats_table)
-        chart = root.findViewById(R.id.day_chart)
-        infoWeather = root.findViewById(R.id.info_weather)
-        infoSun = root.findViewById(R.id.info_sun_group)
-        weatherTemp = root.findViewById(R.id.weather_temp)
-        iconWeather = root.findViewById(R.id.icon_weather)
-        textSunrise = root.findViewById(R.id.text_sunrise)
-        textSunset = root.findViewById(R.id.text_sunset)
-
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_refresh).isVisible = true
         super.onPrepareOptionsMenu(menu)
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_refresh -> {
+            mainViewModel.getRealTimeProduction()
+            true
+        }
+        else -> { super.onOptionsItemSelected(item) }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (date==0L)
+        initListener()
+        if (date==0L) {
             mainViewModel.getRealTimeProduction()
+        }
         else
             mainViewModel.getEnergy(date)
-        initListener()
+
+    }
+
+    override fun onPause() {
+        setSubtitleToolbar(null)
+        super.onPause()
+    }
+
+    private fun setSubtitleToolbar(title: String?){
+        (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = title
+    }
+
+    private fun initView(root: View) {
+        progressBar = root.findViewById(R.id.progress)
+        error = root.findViewById(R.id.not_found_data)
+
+        // Cards
+        dayCardView = root.findViewById(R.id.card_view_day_info)
+        powerCardView = root.findViewById(R.id.card_view_power)
+        productionCardView = root.findViewById(R.id.card_view_production)
+        chartCardView = root.findViewById(R.id.card_view_chart)
+
+        // Day Info
+        iconWeather = root.findViewById(R.id.icon_weather)
+        weatherTemp = root.findViewById(R.id.weather_temp)
+        sunrise = root.findViewById(R.id.sunrise)
+        sunset = root.findViewById(R.id.sunset)
+
+        // Power Info
+        power = root.findViewById(R.id.power)
+        avgPower = root.findViewById(R.id.avg_power)
+        maxPower = root.findViewById(R.id.max_power)
+
+        // Production Info
+        production = root.findViewById(R.id.production)
+        startProduction = root.findViewById(R.id.start_production)
+
+        // Chart
+        chart = root.findViewById(R.id.day_chart)
+
+    }
+
+    private fun showCards(show: Boolean) {
+        dayCardView.show(false)
+        powerCardView.show(show)
+        productionCardView.show(show)
+        chartCardView.show(show)
     }
 
     private fun initListener() {
         if (date==0L) {
-            mainViewModel.pvProductionToday.observe(viewLifecycleOwner, {
-                when (it) {
-                    is Result.Loading -> {
-                        progressBar.show(true)
-                        error.show(false)
-                        infoWeather.show(false)
-                        infoSun.show(false)
-                        statsTable.show(false)
-                        chart.show(false)
-                    }
-                    is Result.Success -> {
-                        error.show(false)
-                        progressBar.show(false)
-                        val item: Energy = it.data as Energy
-                        showData(item)
-                    }
-                    is Result.Failure -> {
-                        progressBar.show(false)
-                        infoWeather.show(false)
-                        infoSun.show(false)
-                        chart.show(false)
-                        statsTable.show(false)
-                        error.show(true)
-                    }
-                }
-            })
+            mainViewModel.pvProductionToday.observe(viewLifecycleOwner) { checkResult(it) }
         } else {
-            mainViewModel.energyDay.observe(viewLifecycleOwner, {
-                when (it) {
-                    is Result.Loading -> {
-                        progressBar.show(true)
-                        error.show(false)
-                        infoWeather.show(false)
-                        infoSun.show(false)
-                        chart.show(false)
-                    }
-                    is Result.Success -> {
-                        error.show(false)
-                        progressBar.show(false)
-                        val item: Energy = it.data as Energy
-                        showData(item)
-                    }
-                    is Result.Failure -> {
-                        progressBar.show(false)
-                        infoWeather.show(false)
-                        infoSun.show(false)
-                        chart.show(false)
-                        error.show(true)
-                    }
-                }
-            })
+            mainViewModel.energyDay.observe(viewLifecycleOwner) { checkResult(it) }
+        }
+
+    }
+
+    private fun checkResult(result: Result){
+        when (result) {
+            is Result.Loading -> {
+                showCards(false)
+                progressBar.show(true)
+                error.show(false)
+                setSubtitleToolbar(null)
+            }
+            is Result.Success -> {
+                error.show(false)
+                progressBar.show(false)
+                showCards(true)
+                val item: Energy = result.data as Energy
+                showData(item)
+            }
+            is Result.Failure -> {
+                showCards(false)
+                progressBar.show(false)
+                error.show(true)
+                setSubtitleToolbar(null)
+            }
         }
     }
 
     private fun showData(data: Energy) {
 
-        if(data.weather_icon !=null && data.weather_temp !=null) {
-            infoWeather.show(true)
-            weatherTemp.text = String.format(" %s \u2103 ", data.weather_temp)
-            iconWeather.setImageResource(data.weather_icon!!)
-        }
-
-        if(data.sunrise !=null && data.sunset !=null ) {
-            infoSun.show(true)
-            textSunrise.text =  getDatefromTimestamp(data.sunrise!!, "HH:mm")
-            textSunset.text =  getDatefromTimestamp(data.sunset!!, "HH:mm")
-        }
-
-        statsTable.removeAllViews()
-        statsTable.show(true)
-        // Real time
+        // Updated
         if (date==0L) {
-            data.date?.let { addRow(R.string.last_updated, it) }
-            data.pv_productionList?.get(0)?.date?.let { addRow(R.string.start_production, getDatefromTimestamp(it, "HH:mm")) }
-            data.power?.let { addRow(R.string.power, "$it W") }
-            data.avg_power?.let { addRow(R.string.avg_power, "$it W")}
-            data.max_power?.let { addRow(R.string.max_power, "$it W")}
+            val title = resources.getString(R.string.updated, data.date)
+            setSubtitleToolbar(title)
+        }
+
+        // Day Info
+        if (data.weatherIcon != null && data.weatherTemp != null && data.sunrise != null && data.sunset != null) {
+            dayCardView.show(true)
+            weatherTemp.text = String.format(" %s° ", data.weatherTemp)
+            iconWeather.setImageResource(data.weatherIcon!!)
+            sunrise.text =  getDatefromTimestamp(data.sunrise!!, "HH:mm")
+            sunset.text =  getDatefromTimestamp(data.sunset!!, "HH:mm")
+        }
+
+        // Power
+        if (date==0L) {
+            data.power?.let {
+                power.show(true)
+                power.text = it.toInt().toString()
+            }
         }
         else {
-            data.pv_productionList?.get(0)?.date?.let { addRow(R.string.start_production, getDatefromTimestamp(it, "HH:mm")) }
-            data.avg_power?.let { addRow(R.string.avg_power, "$it W")}
-            data.max_power?.let { addRow(R.string.max_power, "$it W")}
+            power.show(false)
         }
 
-        data.pv_production?.let { addRow(R.string.production, "$it KW")}
-        data.pv_productionList?.let { drawChart(it) }
+        data.avgPower?.let { avgPower.text = it.toString() }
+        data.maxPower?.let { maxPower.text = it.toString() }
 
-    }
+        // Production
+        production.text = String.format(" %s KW ", data.pvProduction)
+        data.pvProductionList?.get(0)?.date?.let {startProduction.text = getDatefromTimestamp(it, "HH:mm") }
 
-    private fun addRow(name: Int, value: String?){
-        val tableRow = TableRowBinding.inflate(this.layoutInflater)
-        tableRow.name.text = getString(name)
-        tableRow.value.text = value
-        statsTable.addView(tableRow.root)
+        data.pvProductionList?.let { drawChart(it) }
+
     }
 
     private fun drawChart(listPVProduction: List<PVProduction>){
@@ -200,7 +223,7 @@ class DayFragment : Fragment() {
         val barDataSets = generateProductionData(listPVProduction)
 
         chart.xAxis.axisMaximum = barDataSets.xMax + 0.25f
-        chart.xAxis.axisMinimum = barDataSets.xMin - 0.25f;
+        chart.xAxis.axisMinimum = barDataSets.xMin - 0.25f
 
         val data = CombinedData()
         data.setData(lineDataSets)
@@ -280,8 +303,8 @@ class DayFragment : Fragment() {
             setDrawHorizontalHighlightIndicator(false)
             axisDependency = YAxis.AxisDependency.RIGHT
             setDrawValues(true)
-            setCircleColor(Color.rgb(240, 238, 70));
-            circleRadius = 5f;
+            setCircleColor(Color.rgb(240, 238, 70))
+            circleRadius = 5f
             //fillColor = Color.rgb(240, 238, 70);
             mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             valueTextSize = 10f

@@ -14,5 +14,17 @@
 
     <color name="colorPrimaryDarkAlpha33">#4Df57f17</color>
 
+    <color name="dayCardViewBackgroundHeader">#FF424242</color>
+    <color name="dayCardViewBackgroundDetails">#2F2F2F</color>
+
+
+    <color name="power">#f5ee17</color>
+    <color name="avg_power">#F57F17</color>
+    <color name="max_power">#c90000</color>
+    <color name="production">#00C853</color>
+
+    <color name="inverter_status_off">#FF0000</color>
+    <color name="inverter_status_initializing">#FFA500</color>
+    <color name="inverter_status_working">#008000</color>
 
 </resources>

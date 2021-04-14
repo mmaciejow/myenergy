@@ -77,7 +77,8 @@ class FirestoreRepository {
             }
             EnergyType.DAILY -> {
                 val list : List<EnergyDay> = query.convertToObjects()
-                list            }
+                list
+            }
             EnergyType.MONTHLY -> {
                 val list : List<EnergyMonth> = query.convertToObjects()
                 list
@@ -88,11 +89,11 @@ class FirestoreRepository {
             }
         }
 
-    private inline fun <reified T> QuerySnapshot.convertToObjects(): List<T> {
+    private inline fun <reified T: Any> QuerySnapshot.convertToObjects(): List<T> {
         val list = mutableListOf<T>()
         for (document in this) {
             val item = document.toObject<T>()
-            item?.let { list.add(it) }
+            item.let { list.add(it) }
         }
         return list
     }
@@ -107,4 +108,5 @@ class FirestoreRepository {
             else ->  { Log.d("TAG error","Unknown exception!")}
         }
     }
+
 }

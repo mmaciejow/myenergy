@@ -2,15 +2,15 @@ package net.myenv.myenergy.model
 
 data class Energy(
         var id: Long? = null,
-        var date: String ,
-        var pv_production: Float,
-        var pv_productionList: List<PVProduction>? = null,
+        var date: String,
+        var pvProduction: Float,
+        var pvProductionList: List<PVProduction>? = null,
         var power: Float? = null,
-        var max_power: Int? = null,
-        var avg_power: Int? = null,
+        var maxPower: Int? = null,
+        var avgPower: Int? = null,
         var sunrise: Long? = null,
         var sunset: Long? = null,
-        var weather_status: String? = null,
-        var weather_temp: Int? = null,
-        var weather_icon: Int? = null
+        var weatherStatus: String? = null,
+        var weatherTemp: Int? = null,
+        var weatherIcon: Int? = null
 )

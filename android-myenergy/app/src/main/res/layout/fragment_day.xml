@@ -1,149 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
-
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      tools:context="net.myenv.myenergy.ui.realtime.RealTimeFragment">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_button"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+    android:fillViewport="true"
+    android:id="@+id/root_view"
+    >
 
     <LinearLayout
-        android:id="@+id/info_weather"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-      <ImageView
-          android:id="@+id/icon_weather"
-          android:layout_width="75dp"
-          android:layout_height="75dp" />
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Day.CardView"
+            android:visibility="visible"
+            android:id="@+id/card_view_day_info">
 
-      <TextView
-          android:id="@+id/weather_temp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:layout_marginLeft="5dp"
-          android:textSize="25sp"
-          android:textStyle="bold"
-          android:textColor="@color/white"
-          />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Day.CardView.Header"
+                    android:text="@string/day_info" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout style="@style/Day.CardView.Details">
+
+                    <ImageView
+                        android:id="@+id/icon_weather"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:paddingStart="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/weather_temp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/weather_temp"
+                        app:layout_constraintTop_toTopOf="@id/weather_temp"
+                        tools:src="@drawable/weather_10d"
+                        tools:ignore="ContentDescription,RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/weather_temp"
+                        style="@style/Day.CardView.WeatherTemp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/day_info_guideline_vertical"
+                        app:layout_constraintStart_toEndOf="@+id/icon_weather"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="27°"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/sunrise_text"
+                        style="@style/Day.CardView.SunInfo"
+                        android:text="@string/sunrise"
+                        app:layout_constraintBottom_toTopOf="@+id/sunset_text"
+                        app:layout_constraintEnd_toStartOf="@+id/sunrise"
+                        app:layout_constraintStart_toEndOf="@+id/day_info_guideline_vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlHardcoded"
+                        />
+
+                    <TextView
+                        android:id="@+id/sunset_text"
+                        style="@style/Day.CardView.SunInfo"
+                        android:text="@string/sunset"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/sunset"
+                        app:layout_constraintStart_toEndOf="@+id/day_info_guideline_vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/sunrise_text"
+                        tools:ignore="RtlHardcoded"
+                        />
+
+                    <TextView
+                        android:id="@+id/sunrise"
+                        style="@style/Day.CardView.SunInfo"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/sunrise_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/sunrise_text"
+                        app:layout_constraintTop_toTopOf="@+id/sunrise_text"
+                        tools:ignore="RtlHardcoded,RtlSymmetry"
+                        tools:text="6:28"
+                        />
+
+                    <TextView
+                        android:id="@+id/sunset"
+                        style="@style/Day.CardView.SunInfo"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/sunset_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/sunset_text"
+                        app:layout_constraintTop_toTopOf="@+id/sunset_text"
+                        tools:ignore="RtlHardcoded,RtlSymmetry"
+                        tools:text="17:58"
+                        />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/day_info_guideline_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.4" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Day.CardView"
+            android:id="@+id/card_view_power">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Day.CardView.Header"
+                    android:text="@string/power" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout style="@style/Day.CardView.Details">
+
+                    <TextView
+                        android:id="@+id/power"
+                        style="@style/Day.CardView.Power.Value"
+                        android:textColor="@color/power"
+                        android:textSize="40sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/avg_power"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="359" />
+
+                    <TextView
+                        android:id="@+id/avg_power"
+                        style="@style/Day.CardView.Power.Value"
+                        android:textColor="@color/avg_power"
+                        app:layout_constraintEnd_toStartOf="@+id/max_power"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/power"
+                        tools:text="243" />
+
+                    <TextView
+                        android:id="@+id/avg_power_text"
+                        style="@style/Day.CardView.Power.Text"
+                        android:text="@string/avg"
+                        app:layout_constraintEnd_toEndOf="@+id/avg_power"
+                        app:layout_constraintStart_toStartOf="@+id/avg_power"
+                        app:layout_constraintTop_toBottomOf="@+id/avg_power"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/max_power"
+                        style="@style/Day.CardView.Power.Value"
+                        android:textColor="@color/max_power"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/avg_power"
+                        app:layout_constraintTop_toTopOf="@+id/avg_power"
+                        app:layout_constraintBottom_toBottomOf="@+id/avg_power"
+                        tools:text="1500" />
+
+                    <TextView
+                        style="@style/Day.CardView.Power.Text"
+                        android:text="@string/max"
+                        app:layout_constraintEnd_toEndOf="@+id/max_power"
+                        app:layout_constraintStart_toStartOf="@+id/max_power"
+                        app:layout_constraintTop_toBottomOf="@+id/max_power" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Day.CardView"
+            android:id="@+id/card_view_production">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Day.CardView.Header"
+                    android:text="@string/production" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout style="@style/Day.CardView.Details">
+
+                    <TextView
+                        android:id="@+id/production"
+                        style="@style/Day.CardView.Production"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/start_production"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="35 KW" />
+
+                    <TextView
+                        android:id="@+id/start_production"
+                        style="@style/Day.CardView.Production.Value"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/production"
+                        app:layout_constraintTop_toBottomOf="@+id/start_production_text"
+                        tools:text="7:58" />
+
+                    <TextView
+                        android:id="@+id/start_production_text"
+                        style="@style/Day.CardView.Production.Text"
+                        android:text="@string/start_production"
+                        app:layout_constraintBottom_toTopOf="@+id/start_production"
+                        app:layout_constraintEnd_toEndOf="@+id/start_production"
+                        app:layout_constraintStart_toStartOf="@+id/start_production"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Day.CardView"
+            android:id="@+id/card_view_chart">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Day.CardView.Header"
+                    android:layout_width="match_parent"
+                    android:text="@string/details" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout style="@style/Day.CardView.Details">
+
+                    <com.github.mikephil.charting.charts.CombinedChart
+                        android:id="@+id/day_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:elevation="10dp"
+                        android:padding="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+          </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <include
+            android:id="@+id/progress"
+            layout="@layout/progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/not_found_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/not_found_data"
+            android:gravity="center"
+            android:visibility="gone" />
+
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/info_sun_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="icon_sunrise,icon_sunset,text_sunrise,text_sunset"
-         />
-
-    <ImageView
-        android:id="@+id/icon_sunrise"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/ic_sunrise"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_weather" />
-
-    <ImageView
-        android:id="@+id/icon_sunset"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-         android:src="@drawable/ic_sunset"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_button"
-        app:layout_constraintTop_toBottomOf="@+id/info_weather" />
-
-    <TextView
-        android:id="@+id/text_sunrise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/icon_sunrise"
-        app:layout_constraintStart_toStartOf="@+id/icon_sunrise"
-        app:layout_constraintTop_toBottomOf="@+id/icon_sunrise"
-
-        />
-
-    <TextView
-        android:id="@+id/text_sunset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/icon_sunset"
-        app:layout_constraintStart_toStartOf="@+id/icon_sunset"
-        app:layout_constraintTop_toBottomOf="@+id/icon_sunset"
-        />
-
-    <TableLayout
-        android:id="@+id/stats_table"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:stretchColumns="0"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_sunset"/>
-
-    <com.github.mikephil.charting.charts.CombinedChart
-        android:id="@+id/day_chart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@android:color/transparent"
-        android:elevation="10dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stats_table"
-        />
-
-    <include
-        android:id="@+id/progress"
-        layout="@layout/progress_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/not_found_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/not_found_data"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.core.widget.NestedScrollView>

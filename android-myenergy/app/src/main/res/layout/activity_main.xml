@@ -8,9 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/Theme.Toolbar" />
+        style="@style/Theme.Toolbar" />
 
 
     <androidx.fragment.app.FragmentContainerView

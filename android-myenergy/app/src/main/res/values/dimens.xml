@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="padding_item_history">5dp</dimen>
-    <dimen name="padding_table_row">15dp</dimen>
+    <dimen name="padding_table_row">10dp</dimen>
+    <dimen name="card_day_header_text_size">18sp</dimen>
 </resources>

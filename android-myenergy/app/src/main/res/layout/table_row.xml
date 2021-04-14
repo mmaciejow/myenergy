@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:padding="@dimen/padding_table_row"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="5dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

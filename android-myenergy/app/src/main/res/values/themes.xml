@@ -15,9 +15,16 @@
 
     <!-- Toolbar theme. -->
     <style name="Theme.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">#272727</item>
         <item name="android:elevation" >4dp</item>
-        <item name="android:textAlignment" > center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="subtitleTextAppearance">@style/Theme.Toolbar.Subtitle</item>
+    </style>
+
+    <style name="Theme.Toolbar.Subtitle">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- Tabs style. -->
@@ -31,7 +38,7 @@
     <style name="history_table_header" >
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:background">@color/colorPrimaryDarkAlpha33</item>
         <item name="android:padding">10dp</item>
         <item name="android:textAlignment">center</item>
@@ -43,5 +50,81 @@
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <!-- DAY FRAGMENT -->
+    <style name="Day.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="Day.CardView.Header" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/dayCardViewBackgroundHeader</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Day.CardView.Details" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/dayCardViewBackgroundDetails</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+
+    <style name="Day.CardView.WeatherTemp">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Day.CardView.SunInfo" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <style name="Day.CardView.Power.Value" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Day.CardView.Power.Text" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Day.CardView.Production" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/production</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Day.CardView.Production.Text" parent="Day.CardView.Power.Text" />
+    <style name="Day.CardView.Production.Value" parent="Day.CardView.Power.Value"/>
+
+    <style name="Day.CardView.Inverter.Value" parent="Day.CardView.Power.Value"/>
+    <style name="Day.CardView.Inverter.Text" parent="Day.CardView.Power.Text" />
+
 
 </resources>
